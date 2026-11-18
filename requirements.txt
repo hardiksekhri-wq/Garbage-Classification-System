@@ -1,0 +1,10 @@
+numpy>=1.26
+opencv-python>=4.9
+Pillow>=10.0
+pandas>=2.1
+matplotlib>=3.8
+scikit-learn>=1.4
+scikit-image>=0.22
+tensorflow>=2.16
+streamlit>=1.32
+ultralytics>=8.2
