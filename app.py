@@ -19,7 +19,7 @@ from src.detection import detect_image
 
 ROOT = Path(__file__).resolve().parent
 
-MODEL_PATH = ROOT / "models" / "mobilenet_garbage.keras"
+MODEL_PATH = ROOT / "models" / "mobilenet_garbage_improved.keras"
 YOLO_MODEL_PATH = ROOT / "models" / "best.pt"
 
 
