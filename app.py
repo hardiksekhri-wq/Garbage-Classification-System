@@ -93,4 +93,4 @@ elif page == "Evaluation":
         if cm_path.exists():
             st.image(str(cm_path), caption="Confusion matrix")
     else:
-        st.info("Evaluation results are not available yet. Run evaluate_classifier.py after training.")
+        st.info("Evaluation results are not available. Please check the outputs folder.")
