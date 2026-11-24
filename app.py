@@ -59,27 +59,62 @@ elif page == "Garbage Classification":
                 st.bar_chart(result["probabilities"])
             except Exception as exc:
                 st.error(str(exc))
+
 elif page == "Object Detection":
-    uploaded = st.file_uploader("Upload an image for detection", type=["jpg", "jpeg", "png"], key="det")
+    uploaded = st.file_uploader(
+        "Upload an image for detection",
+        type=["jpg", "jpeg", "png"],
+        key="det"
+    )
+
     weights = str(ROOT / "models" / "best.pt")
-st.caption("Using TACO-trained YOLOv8n model (60 litter categories)")
-    confidence = st.slider("Confidence threshold", 0.05, 0.95, 0.25, 0.05)
+
+    st.caption("Using TACO-trained YOLOv8n model (60 litter categories)")
+
+    confidence = st.slider(
+        "Confidence threshold",
+        0.05, 0.95, 0.25, 0.05
+    )
+
     if uploaded and st.button("Detect objects"):
         suffix = Path(uploaded.name).suffix or ".jpg"
+
         with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
             tmp.write(uploaded.getvalue())
             tmp_path = tmp.name
+
         try:
-            annotated, detections = detect_image(tmp_path, weights=weights, confidence=confidence)
+            annotated, detections = detect_image(
+                tmp_path,
+                weights=weights,
+                confidence=confidence
+            )
+
             annotated_rgb = cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
-            st.image(annotated_rgb, caption="YOLO detections", use_container_width=True)
-            st.write(detections if detections else "No objects detected.")
-            if weights == "yolov8n.pt":
-                st.warning("This is a generic COCO detector, not a litter-specific detector. Use TACO-trained best.pt for garbage-specific detection.")
+
+            st.image(
+                annotated_rgb,
+                caption="YOLO TACO detections",
+                use_container_width=True
+            )
+
+            if detections:
+                st.subheader("Detected Objects")
+
+                for detection in detections:
+                    st.write(
+                        f"**{detection['label']}** — "
+                        f"{detection['confidence'] * 100:.2f}% confidence"
+                    )
+            else:
+                st.info("No objects detected.")
+
         except Exception as exc:
-            st.error(str(exc))
+            st.error(f"Detection error: {exc}")
+
         finally:
             Path(tmp_path).unlink(missing_ok=True)
+
 elif page == "Evaluation":
     metrics_path = ROOT / "outputs" / "classification_metrics.json"
     if metrics_path.exists():
