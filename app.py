@@ -20,16 +20,31 @@ page = st.sidebar.radio("Navigate", ["Project Overview", "Garbage Classification
 
 if page == "Project Overview":
     st.subheader("Project overview")
+
     st.write(
-        "This project processes waste images using OpenCV, extracts traditional visual descriptors, "
-        "classifies waste using a CNN, and provides a YOLO-based object-detection interface."
+        "This project processes waste images using OpenCV for image "
+        "preprocessing and visual feature extraction. It uses a "
+        "MobileNetV2-based deep learning model for garbage classification "
+        "and provides a YOLO-based object detection interface."
     )
+
     st.markdown("""
     **Classification classes:** cardboard, glass, metal, paper, plastic, trash.
 
-    **Pipeline:** Input image → OpenCV preprocessing → Feature extraction → CNN classification / YOLO detection → Evaluation.
+    **Classification model:** MobileNetV2 (Transfer Learning).
+
+    **Pipeline:** Input image → OpenCV preprocessing → MobileNetV2 classification
+    / YOLO object detection → Evaluation.
+
+    **Validation accuracy:** 81.98% (505 validation images).
+
+    **Model path:** `models/mobilenet_garbage.keras`
     """)
-    st.info("Train the CNN in Google Colab and place models/garbage_cnn.keras in this project folder.")
+
+    st.info(
+        "The trained MobileNetV2 model is already included in the "
+        "models folder. No additional training is required."
+    )
 elif page == "Garbage Classification":
     uploaded = st.file_uploader("Upload one garbage image", type=["jpg", "jpeg", "png"])
     if uploaded:
