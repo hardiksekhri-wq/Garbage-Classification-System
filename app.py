@@ -61,7 +61,8 @@ elif page == "Garbage Classification":
                 st.error(str(exc))
 elif page == "Object Detection":
     uploaded = st.file_uploader("Upload an image for detection", type=["jpg", "jpeg", "png"], key="det")
-    weights = st.text_input("YOLO weights path", "models/best.pt")
+    weights = str(ROOT / "models" / "best.pt")
+st.caption("Using TACO-trained YOLOv8n model (60 litter categories)")
     confidence = st.slider("Confidence threshold", 0.05, 0.95, 0.25, 0.05)
     if uploaded and st.button("Detect objects"):
         suffix = Path(uploaded.name).suffix or ".jpg"
